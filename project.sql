@@ -1,75 +1,103 @@
--- delete the database. 
-Drop database libery;
--- create database libery.
+DROP database libery;
 CREATE database libery;
--- show all databases.
 SHOW databases;
--- using the database
 USE libery;
--- create book table
+
+-- CREATE TABLES--------
+CREATE TABLE author(
+`author_id` int auto_increment NOT NULL PRIMARY KEY,
+`author_firstname` VARCHAR(20),
+`author_lastname` VARCHAR(20)
+); 
+
 CREATE TABLE book(
-`id` int auto_increment NOT NULL PRIMARY KEY,
-`title` VARCHAR(60) NOT NULL,
-`author` int,
- FOREIGN KEY (id) REFERENCES author(id),
+`book_id` int auto_increment NOT NULL PRIMARY KEY,
+`book_title` VARCHAR(60) NOT NULL,
+`book_author` int,
+ FOREIGN KEY (book_author) REFERENCES author(author_id),
 `publication_year` DATE
 );
--- create author table
-CREATE TABLE author(
-`id` int auto_increment NOT NULL PRIMARY KEY,
-`first_name` VARCHAR(20),
-`last_nam` VARCHAR(20)
-); 
--- create client table
+
 CREATE TABLE client(
-`id` int auto_increment NOT NULL PRIMARY KEY,
-`first_name` VARCHAR(20),
-`last_nam` VARCHAR(20),
-`joined_date` DATE
+`client_id` int auto_increment NOT NULL PRIMARY KEY,
+`client_firstname` VARCHAR(20),
+`client_lastname` VARCHAR(20),
+`client_joined_date` DATE
 ); 
--- loan table
+
 CREATE TABLE loan(
-`id` int auto_increment NOT NULL PRIMARY KEY,
+`loan_id` int auto_increment NOT NULL PRIMARY KEY,
 `book` int,
-FOREIGN KEY(id) REFERENCES book(id),
-`clinet` int,
-FOREIGN KEY(id) REFERENCES client(id),
+FOREIGN KEY(book) REFERENCES book(book_id),
+`client` int,
+FOREIGN KEY(client) REFERENCES client(client_id),
 `loan_date` DATE
-);
--- view tables
-SHOW TABLES;
+); 
+
 -- solution for  Error code 1452 - Cannot add or update a child row: a foreign key constraint fails
 set foreign_key_checks=0;
-
---- inserting to tables
+-- inserting values to tables
 INSERT INTO author VALUES(
 5,
-"Murwan",
-"Eisa"
+"Malin",
+"Eklund"
 );
-INSERT INTO book(id, title,author, publication_year) VALUES(
+INSERT INTO book(book_id, book_title,book_author, publication_year) VALUES(
 5,
-"React JS book",
-4,
-"2020/10/18"
+"java book",
+3,
+"2000/11/18"
 );
 
 INSERT INTO client VALUES(
 5,
-"Amira",
-"Abdallah",
-"2021/4/2"
+"sally",
+"Adem",
+"1995/4/2"
 );
 
 INSERT INTO loan VALUES(
 5,
-4,
-4,
+1,
+5,
 "2021/4/5"
 ); 
 
--- show tables value
+-- showing tables values
 SELECT * FROM book;
 SELECT * FROM author;
 SELECT * FROM loan;
 SELECT * FROM client;
+-- updating and deleting  tables
+UPDATE book SET book_title = "C# book" WHERE book_id=1;
+UPDATE book SET book_title = "Python book", book_author = 2 WHERE book_id=2;
+DELETE FROM author WHERE author_id = 3;
+
+-- inner join
+SELECT * FROM book inner JOIN author ON book.book_author = author.author_id;
+
+-- joind the book and author first and last name
+SELECT book.*, author.author_firstname, author.author_lastname
+FROM book left join author on author.author_id = book.book_author;
+
+-- join the 3 tables
+SELECT loan.loan_id, book.book_title, client.client_firstname,client.client_lastname, loan.loan_date 
+FROM loan INNER join book on loan.book = book.book_id
+INNER JOIN  client on loan.client = client.client_id;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
