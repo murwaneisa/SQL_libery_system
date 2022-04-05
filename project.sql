@@ -1,9 +1,12 @@
-DROP database libery;
-CREATE database libery;
+-- delete the database. 
+Drop database library;
+-- create database libery.
+CREATE database library;
+-- show all databases.
 SHOW databases;
-USE libery;
-
--- CREATE TABLES--------
+-- using the database
+USE library;
+-- create book table
 CREATE TABLE author(
 `author_id` int auto_increment NOT NULL PRIMARY KEY,
 `author_firstname` VARCHAR(20),
@@ -33,33 +36,35 @@ FOREIGN KEY(book) REFERENCES book(book_id),
 FOREIGN KEY(client) REFERENCES client(client_id),
 `loan_date` DATE
 ); 
-
+-- view tables
+SHOW TABLES;
 -- solution for  Error code 1452 - Cannot add or update a child row: a foreign key constraint fails
 set foreign_key_checks=0;
+
 -- inserting values to tables
 INSERT INTO author VALUES(
-5,
-"Malin",
-"Eklund"
+6,
+"Sara",
+"Ronaldo"
 );
 INSERT INTO book(book_id, book_title,book_author, publication_year) VALUES(
 5,
-"java book",
-3,
-"2000/11/18"
+"C# book",
+5,
+"1990/10/18"
 );
 
 INSERT INTO client VALUES(
-5,
-"sally",
-"Adem",
-"1995/4/2"
+6,
+"Nelly",
+"adem",
+"2021/9/2"
 );
 
 INSERT INTO loan VALUES(
 5,
+3,
 1,
-5,
 "2021/4/5"
 ); 
 
@@ -68,10 +73,11 @@ SELECT * FROM book;
 SELECT * FROM author;
 SELECT * FROM loan;
 SELECT * FROM client;
+
 -- updating and deleting  tables
 UPDATE book SET book_title = "C# book" WHERE book_id=1;
 UPDATE book SET book_title = "Python book", book_author = 2 WHERE book_id=2;
-DELETE FROM author WHERE author_id = 3;
+DELETE FROM author WHERE author_id = 1;
 
 -- inner join
 SELECT * FROM book inner JOIN author ON book.book_author = author.author_id;
@@ -84,20 +90,3 @@ FROM book left join author on author.author_id = book.book_author;
 SELECT loan.loan_id, book.book_title, client.client_firstname,client.client_lastname, loan.loan_date 
 FROM loan INNER join book on loan.book = book.book_id
 INNER JOIN  client on loan.client = client.client_id;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
